@@ -1,0 +1,46 @@
+name: Import 2ypix gallery assets
+on:
+  push:
+    paths:
+      - '.transfer/2ypix.part*'
+      - '.github/workflows/import-gallery.yml'
+permissions:
+  contents: write
+jobs:
+  import-gallery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Restore and verify decompressed website assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .transfer/2ypix.part* | base64 --decode > /tmp/2ypix-gallery.zip
+          unzip -tq /tmp/2ypix-gallery.zip
+          mkdir -p /tmp/2ypix-gallery
+          unzip -q /tmp/2ypix-gallery.zip -d /tmp/2ypix-gallery
+          test -f /tmp/2ypix-gallery/PHOTO_CATALOG.json
+          test -d /tmp/2ypix-gallery/assets/gallery
+          test "$(find /tmp/2ypix-gallery/assets/gallery -name '*.webp' | wc -l)" -eq 82
+          cp -a /tmp/2ypix-gallery/assets/. assets/
+          cp /tmp/2ypix-gallery/PHOTO_CATALOG.json .
+          python3 - <<'PY'
+          import re, pathlib
+          html=pathlib.Path('index.html').read_text()
+          refs=set(re.findall(r'assets/[A-Za-z0-9_./-]+',html))
+          missing=[x for x in refs if not pathlib.Path(x).is_file()]
+          if missing: raise SystemExit('Missing assets: '+', '.join(missing))
+          print('Verified',len(refs),'asset references and 82 gallery images')
+          PY
+      - name: Commit decompressed files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets PHOTO_CATALOG.json
+          git rm -r .transfer
+          git commit -m "Add 82 optimized photos and complete 2ypix website assets"
+          git push
