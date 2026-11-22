@@ -1,13 +1,22 @@
 # 2ypix — STUDIO / STREET
 
-Sitio estático de dos identidades. `index.html` incluye galerías de 82 fotografías originales clasificadas: STUDIO (Navidad, bodas, negocios) y STREET (artistas, retratos urbanos y fotografía conceptual).
+Website fotográfico de **2ypix** con dos identidades visuales: STUDIO (Navidad, bodas, negocios) y STREET (artistas, retratos urbanos y fotografía conceptual).
 
-**Estado de assets:** El HTML está versionado, pero los binarios de `assets/` todavía no están incorporados al repositorio. Para desplegar el sitio completo, extrae el paquete `2ypix_website_gallery_v2.zip` desde la carpeta del proyecto en Google Drive y coloca su contenido en la raíz de este repositorio. El ZIP incluye el HTML, imágenes optimizadas y `PHOTO_CATALOG.json`.
+## Preview
 
-Carpeta del proyecto: https://drive.google.com/drive/folders/1fEUUgk_GcgYM_xzpcVXMRvum60D0rVsa
+https://2ypix-website.pages.dev
 
-Paquete: https://drive.google.com/file/d/1nyWLdllWKE7bvgA3dAoXJkVCNsv0qrJR/view
+## Contenido publicado en GitHub
 
-Originales: https://drive.google.com/file/d/17w0o0f5SvLHwnmy1QKgf-Cb44NrpSPtE/view
+- `index.html` — sitio estático responsive, estilos y navegación de ambas identidades.
+- `assets/` — fotografías e imágenes optimizadas en WebP, incorporadas como archivos independientes y descomprimidos.
+- `assets/gallery/photo-00.webp` a `photo-81.webp` — las 82 fotografías de galerías.
+- `PHOTO_CATALOG.json` — catálogo fotográfico.
 
-No publicar un deployment hasta incorporar las imágenes; de otro modo aparecerán rotas.
+La web se despliega desde la rama `main` en **Cloudflare Pages**, con build estático (`exit 0`) y directorio de salida `.`.
+
+## Fuentes del proyecto
+
+[Carpeta 2ypix en Google Drive](https://drive.google.com/drive/folders/1fEUUgk_GcgYM_xzpcVXMRvum60D0rVsa) · [Paquete original](https://drive.google.com/file/d/1nyWLdllWKE7bvgA3dAoXJkVCNsv0qrJR/view)
+
+El repositorio contiene los assets descomprimidos: no requiere descargar el ZIP de Drive para construir o publicar la web.
